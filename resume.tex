@@ -24,7 +24,7 @@ SMTP-STS : SMTP Strict Transport Security
 % 和文概要
 \begin{abstract}
 \\
-本研究はSMTPにおけるMTA間通信において中間者攻撃の脆弱性が存在する問題に着目し,IETF UTA Working Groupで審議中のSMTP STS(SMTP Strict Transport Security)\cite{draft}をJavaScriptで実装を行う.実装物と既存実装物の疎通を確認するとともに,その有用性と問題点を考察する.
+本研究はSMTPにおけるクライアント-MTA間の通信において中間者攻撃の脆弱性が存在する問題に着目し,IETF UTA Working Groupで審議中のSMTP STS(SMTP Strict Transport Security)\cite{draft}をJavaScriptにて実装する.実装物と既存実装物の相互運用テストを行うとともに,その有用性と問題点を考察する.
 \end{abstract}
 
 \maketitle
@@ -32,7 +32,7 @@ SMTP-STS : SMTP Strict Transport Security
 
 \section{背景}
 
-SMTPはWWW以前から使用され事実上の標準技術になっているメール配送プロトコルである.SMTPは当初の仕様から今日に至るまで改善が続けられており現在も使用されている.電子メールは配送されるまでに幾つかのMTAを経由して配送されるが,その通信経路は必ずしも暗号化されていないという問題がある.[図1]
+SMTPはWWW以前から使用されているメール配送プロトコルの標準技術だ.SMTPは当初の仕様から今日に至るまで改善が続けられており現在も使用されている.電子メールは配送されるまでに１つまたは複数のMTAを経由して配送されるが,その通信経路は必ずしも暗号化されていない問題がある.[図1]
 \begin{figure}[htbp]
 　\begin{center}
       \includegraphics[width=7cm]{figure1.png}
@@ -40,18 +40,18 @@ SMTPはWWW以前から使用され事実上の標準技術になっているメ�
     \end{center}
 \end{figure}
 
-つまり中間者攻撃には脆弱である.2つの攻撃例を示す.
+STARTTLS拡張で通信経路の暗号化は行われるが,日和見暗号化であるため能動的な攻撃を防ぐことは難しい.つまり中間者攻撃には脆弱である.ここに2つの攻撃例を示す.
 
 \begin{itemize}
 \item POODLE攻撃 
-\item サーバの応答の正当性
+\item DNS Poisoning
 \end{itemize}
 
 \subsection{POODLE攻撃}
-POODLE攻撃とは通信のために古い暗号方式をサポートする対象に行われる攻撃だ.現在は暗号方式としてTLS1.2の使用が推奨されておりほとんどのサーバやブラウザはTLS1.2に対応している.しかし全てのサーバ,ブラウザが対応しているとは限らない.そのため互換性を確保するために古い暗号方式での通信リクエストを受ける場合がある.その際,SSL3.0のようなセキュリティホールが既知であるプロトコルで通信をすることが可能となる.このプロトコルのダウングレードを悪用して中間者攻撃を行うのがPOODLE攻撃である.
+POODLE攻撃とは暗号化された通信から脆弱性をつき情報を盗み出す攻撃だ.現在はトランスポート層における通信秘匿技術としてTLS1.2の使用が推奨されておりほとんどのサーバやブラウザはTLS1.2に対応している.しかし全てのサーバ,ブラウザが対応しているとは限らない.そのため互換性を確保するために古い暗号方式での通信リクエストを受ける場合がある.その際,SSL3.0のようなセキュリティホールが既知化したプロトルで通信をすることが可能となる.このプロトコルのダウングレードを悪用して中間者攻撃を行うのがPOODLE攻撃である.
 
-\subsection{サーバの応答の正当性}
-またサーバの応答の正当性をつく攻撃も考えられる.DNS応答が偽造・改竄されているサーバに接続した場合,ユーザは意図しない接続先に誘導される.DNSSECで正当性が証明されない限りそのサーバが意図したものかユーザは判断することができない.
+\subsection{DNS Poisoning}
+DNS Poisoningも考えられる.DNS応答が偽造・改竄されているサーバに接続した場合,ユーザは意図しない接続先に誘導される.DNSSECで正当性が証明されない限りそのサーバが意図したものかユーザは判断することができない.
 
 \section{研究目的}
 
@@ -63,7 +63,7 @@ POODLE攻撃とは通信のために古い暗号方式をサポートする対�
 関連技術は2点あげられる.
 
 \subsection{HTTP Strict Transport Security (HSTS)}
-HSTSはWebサーバがブラウザに対して現在のアクセス以降はHTTPではなくHTTPSでの接続を強制するセキュリティ機構である.SMTP-STSの考えはこれに基づくものだ.
+HSTSはWebサーバがブラウザに対して現在のアクセス以降はHTTPではなくHTTPSでの接続を強制するセキュリティ機構である.SMTP-STSの考えはこれに基づく.
 
 \subsection{DNS-based Authentication of Named Entities(DANE)}
 DANEはドメイン(DNS)とそれに証明書を発行する証明局との紐付けを明確化するセキュリティ機構だ.DANEによってサーバの応答の正当性を担保することができる.
