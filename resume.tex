@@ -8,7 +8,7 @@
 %\layout
 
 \title{2016年 秋 村井研 TERM中間\\
-SMTP Strict Transport Security (SMTP-STS)
+SMTP-STS : SMTP Strict Transport Security
 \\を用い暗号化された電子メール通信経路の確立とその実装}
 
 % 和文著者名
@@ -23,7 +23,8 @@ SMTP Strict Transport Security (SMTP-STS)
 
 % 和文概要
 \begin{abstract}
-\\SMTPはメール転送プロトコルの事実上の標準技術であるが,MTA間の通信への中間者攻撃に脆弱性が存在する.本研究ではIETF UTA Working Groupで審議中のSMTP STS(SMTP Strict Transport Security)をJavaScriptで実装し既存実装との疎通を確認するとともに,その有用性と問題点を考察する.
+\\
+本研究はSMTPにおけるMTA間通信において中間者攻撃の脆弱性が存在する問題に着目し,IETF UTA Working Groupで審議中のSMTP STS(SMTP Strict Transport Security)\cite{draft}をJavaScriptで実装を行う.実装物と既存実装物の疎通を確認するとともに,その有用性と問題点を考察する.
 \end{abstract}
 
 \maketitle
@@ -39,7 +40,7 @@ SMTPはWWW以前から使用され事実上の標準技術になっているメ�
     \end{center}
 \end{figure}
 
-つまり中間者攻撃には脆弱である.2つの攻撃例と図を記す.
+つまり中間者攻撃には脆弱である.2つの攻撃例を示す.
 
 \begin{itemize}
 \item POODLE攻撃 
@@ -52,25 +53,19 @@ POODLE攻撃とは通信のために古い暗号方式をサポートする対�
 \subsection{サーバの応答の正当性}
 またサーバの応答の正当性をつく攻撃も考えられる.DNS応答が偽造・改竄されているサーバに接続した場合,ユーザは意図しない接続先に誘導される.DNSSECで正当性が証明されない限りそのサーバが意図したものかユーザは判断することができない.
 
-
 \section{研究目的}
 
-本研究では中間者攻撃に脆弱であるSMTPプロトコルの現状を問題と考え,SMTP-STSによるセキュアなMTA間通信を実現することを目的としSMTP-STSをJavaScriptで実装する.
-
+以上から本研究では中間者攻撃に脆弱であるSMTPの現状を問題とし,SMTP-STSによるセキュアなMTA間通信を実現することを目的にする.
 
 
 \section{関連技術}
 
-関連技術としては以下の２点があげられる.
-\begin{itemize}
-\item HTTP Strict Transport Security (HSTS)
-\item DNS-based Authentication of Named Entities(DANE)
-\end{itemize}
+関連技術は2点あげられる.
 
-\subsection{HSTS}
+\subsection{HTTP Strict Transport Security (HSTS)}
 HSTSはWebサーバがブラウザに対して現在のアクセス以降はHTTPではなくHTTPSでの接続を強制するセキュリティ機構である.SMTP-STSの考えはこれに基づくものだ.
 
-\subsection{DANE}
+\subsection{DNS-based Authentication of Named Entities(DANE)}
 DANEはドメイン(DNS)とそれに証明書を発行する証明局との紐付けを明確化するセキュリティ機構だ.DANEによってサーバの応答の正当性を担保することができる.
 
 \section{提案手法}
