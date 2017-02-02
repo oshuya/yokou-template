@@ -7,7 +7,7 @@
 \begin{document}
 %\layout
 
-\title{2016年 秋 村井研 TERM中間\\
+\title{2016年 秋 村井研 TERM最終\\
 MTA-STS : SMTP MTA Strict Transport Security
 \\を用い暗号化された電子メール通信経路の確立とその実装}
 
@@ -24,7 +24,7 @@ MTA-STS : SMTP MTA Strict Transport Security
 % 和文概要
 \begin{abstract}
 \\
-本研究はSMTPにおけるクライアント-MTA間の通信において中間者攻撃の脆弱性が存在する問題に着目し, IETF UTA Working Groupで審議中のMTA STS(SMTP MTA Strict Transport Security)\cite{draft}をJavaScriptにて実装した.なお本実装はMTA-STSの初めての実装物である.
+本研究はSMTPにおけるクライアント-MTA間の通信において中間者攻撃の脆弱性が存在する問題に着目し, IETF UTA Working Groupで審議中のMTA STS(SMTP MTA Strict Transport Security)\cite{draft}をJavaScriptにて実装した. 本研究はMTA-STSのポリシーでメールを送信を認証する初めての実装物である.
 \end{abstract}
 
 \maketitle
@@ -69,7 +69,7 @@ DANEはドメイン(DNS)とそれに証明書を発行する証明局との紐�
 
 \section{提案手法}
 
-本研究では上記の問題を解決するためにMTA-STSを実装する.MTA-STSはSMTPの中間者攻撃への脆弱性から検討されている新しいセキュリティ機構であり, IETF UTA Working Groupで審議中だ.\cite{draft}MTA-STSの技術的特徴は２点に集約される.
+本研究では上記の問題を解決するためにMTA-STSを実装する.MTA-STSはSMTPの中間者攻撃への脆弱性から検討されている新しいセキュリティ機構であり, IETF UTA Working Groupで審議中だ. \cite{draft} MTA-STSの技術的特徴は２点に集約される.
 
 \begin{itemize}
 \item STARTTLSでの通信を強制する.
@@ -91,11 +91,11 @@ DANEはドメイン(DNS)とそれに証明書を発行する証明局との紐�
 
 \section{評価}
 
-実際に本実装を使用しメールの送信を行い, 認証が正しく行われるかを検証した. MTA-STSポリシーを保持しかつ運用されているMTAにはメールが送信でき, ポリシーを持たないまたは有効でない証明書を利用するMTAにはメールが送信できないことを確認した.
+実際に本実装を使用しメールの送信を行い, 認証が正しく行われるかを検証した. MTA-STSポリシーを保持しかつ運用されているMTAにはメールが送信でき, ポリシーを持たないMTAにはメールが送信できないことを確認した.
 
 \section{まとめ}
 
-本研究は初めてMTA-STSの認証部分の実装を行なった. 実装の過程の中で実運用されているメールサーバの多くはMTA-STSをサポートしていないこと, サポートしていたとしてもドラフトの定義通りに運用されていないことが明らかになった.
+本研究ではMTA-STSの認証の検証結果をMTAに渡す実装を行った. 実装の過程の中で実運用されているメールサーバの多くはMTA-STSをサポートしていないこと, 今回のサーベイの中でサポートが確認できた全てのサーバが"report"モードでの運用がなされていることがわかった.
 
 
 
